@@ -1,14 +1,14 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/CheatManager.h"
-#include "TLCommand.generated.h"
+#include "TL_Command.generated.h"
 
 
 /**
  *	主要用于测试的GM命令
  */
 UCLASS()
-class THELAST_API UTLCommand : public UCheatManager
+class THELAST_API UTL_Command : public UCheatManager
 {
 	GENERATED_BODY()
 public:

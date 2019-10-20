@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "TLActorTool.generated.h"
+#include "TL_ActorTool.generated.h"
 
 /**
  * 获取Actor引用的工具
  */
 UCLASS()
-class THELAST_API UTLActorTool : public UObject
+class THELAST_API UTL_ActorTool : public UObject
 {
 	GENERATED_BODY()
 	
