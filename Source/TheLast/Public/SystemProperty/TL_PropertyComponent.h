@@ -23,15 +23,15 @@ public:
 	UTL_PropertyComponent();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Property")
-	TMap<EACT_PropertyEnum, FACT_PropertyStruct> PropertiesMaps;
+	TMap<ETL_PropertyEnum, FTL_PropertyStruct> PropertiesMaps;
 
 public:
 	//Get the value map to the enum
 	UFUNCTION(BlueprintPure)
-	FORCEINLINE float GetMappedProperty(EACT_PropertyEnum MapEnum) { return PropertiesMaps.Find(MapEnum) ? PropertiesMaps.Find(MapEnum)->Current : 0.f; }
+	FORCEINLINE float GetMappedProperty(ETL_PropertyEnum MapEnum) { return PropertiesMaps.Find(MapEnum) ? PropertiesMaps.Find(MapEnum)->Current : 0.f; }
 	//Get the whole struct
 	UFUNCTION(BlueprintPure)
-	FORCEINLINE bool GetMappedPropertyStruct(EACT_PropertyEnum MapEnum, FACT_PropertyStruct& PropertyStruct) 
+	FORCEINLINE bool GetMappedPropertyStruct(ETL_PropertyEnum MapEnum, FTL_PropertyStruct& PropertyStruct) 
 	{ 
 		if (!PropertiesMaps.Find(MapEnum)) return false;
 		PropertyStruct = PropertiesMaps[MapEnum]; 
@@ -39,17 +39,17 @@ public:
 	}
 	
 	UFUNCTION(BlueprintCallable)
-	void SetMappedProperty(EACT_PropertyEnum MapEnum, float NewValue, E_PropertySetStatus& Status, bool bUpdateInUI = true);
+	void SetMappedProperty(ETL_PropertyEnum MapEnum, float NewValue, E_PropertySetStatus& Status, bool bUpdateInUI = true);
 	UFUNCTION(BlueprintCallable)
-	bool ModifyMappedPropertyBy(EACT_PropertyEnum MapEnum, float By, E_PropertySetStatus& Status, bool bUpdateInUI = true, bool bCheck = true);
+	bool ModifyMappedPropertyBy(ETL_PropertyEnum MapEnum, float By, E_PropertySetStatus& Status, bool bUpdateInUI = true, bool bCheck = true);
 	UFUNCTION(BlueprintPure)
-	bool CheckProperty(EACT_PropertyEnum MapEnum, float By);
+	bool CheckProperty(ETL_PropertyEnum MapEnum, float By);
 
 //UI
 	UFUNCTION()
-	virtual void UpdatePropertyUI(EACT_PropertyEnum MapEnum);
+	virtual void UpdatePropertyUI(ETL_PropertyEnum MapEnum);
 	UFUNCTION(BlueprintImplementableEvent)
-	void BP_UpdatePropertyUI(EACT_PropertyEnum MapEnum);
+	void BP_UpdatePropertyUI(ETL_PropertyEnum MapEnum);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

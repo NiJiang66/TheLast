@@ -10,7 +10,7 @@
 
 //Property
 UENUM(BlueprintType)
-enum class EACT_PropertyEnum : uint8
+enum class ETL_PropertyEnum : uint8
 {
 	E_None      UMETA(DisplayName = "None"),
 	E_Health     UMETA(DisplayName = "Health"),
@@ -20,7 +20,7 @@ enum class EACT_PropertyEnum : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FACT_PropertyStruct
+struct FTL_PropertyStruct
 {
 	GENERATED_USTRUCT_BODY()
 

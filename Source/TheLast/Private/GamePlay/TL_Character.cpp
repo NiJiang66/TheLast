@@ -12,11 +12,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/Engine.h"
 
-//#include "BaseDamageBox.h"
+#include "BaseDamageBox.h"
 #include "TL_SkillComponent.h"
 #include "TL_Helper.h"
 
-//#include "ACT_CombatComponent.h"
+#include "TL_CombatComponent.h"
 
 
 ATL_Character::ATL_Character()
@@ -92,7 +92,7 @@ void ATL_Character::BeginPlay()
 		TL_Helper::Debug(TEXT("Character: Failed To Get Combo Component"), 20, FColor::Red);
 	}
 
-	//TL_InitializeUI();
+	TL_InitializeUI();
 }
 
 void ATL_Character::AnyKeyFunc(FKey key)
@@ -116,36 +116,36 @@ void ATL_Character::GetTargetRelativePostion(FVector TargetPositon, float& FwdOr
 
 
 
-//AActor* ATL_Character::BindWeapon(TSubclassOf<AActor> WeaponSubClass, FName SocketName, USceneComponent* ComponentToBind)
-//{
-//	if (GetWorld() && WeaponSubClass && ComponentToBind) {
-//		AActor* WeaponToBind = GetWorld()->SpawnActor<AActor>(WeaponSubClass, ComponentToBind->GetSocketTransform(SocketName));
-//		WeaponToBind->AttachToComponent(ComponentToBind, FAttachmentTransformRules::SnapToTargetIncludingScale, SocketName);
-//		WeaponToBind->SetOwner(this);
-//		return WeaponToBind;
-//	}																		
-//	return nullptr;
-//}
-//
-//bool ATL_Character::TurnToTargetAtOnceWithHitResult(FHitResult HitResult)
-//{
-//	//Quick Turn With a HitResult 
-//	AActor* OtherActor = HitResult.GetActor();
-//	return TurnToTargetAtOnce(OtherActor->GetRootComponent());
-//}
-//
-//bool ATL_Character::TurnToTargetAtOnce(USceneComponent* Target)
-//{
-//	//Immediately Turn To An Actor Target
-//	if (Target) {
-//		FVector SelfLocation = GetActorLocation();
-//		FVector TargetLocation = Target->GetComponentLocation();
-//		FRotator NewRotator = UKismetMathLibrary::FindLookAtRotation(SelfLocation, TargetLocation);
-//		NewRotator.Pitch = 0;
-//		return SetActorRotation(NewRotator);
-//	}
-//	return false;
-//}
+AActor* ATL_Character::BindWeapon(TSubclassOf<AActor> WeaponSubClass, FName SocketName, USceneComponent* ComponentToBind)
+{
+	if (GetWorld() && WeaponSubClass && ComponentToBind) {
+		AActor* WeaponToBind = GetWorld()->SpawnActor<AActor>(WeaponSubClass, ComponentToBind->GetSocketTransform(SocketName));
+		WeaponToBind->AttachToComponent(ComponentToBind, FAttachmentTransformRules::SnapToTargetIncludingScale, SocketName);
+		WeaponToBind->SetOwner(this);
+		return WeaponToBind;
+	}																		
+	return nullptr;
+}
+
+bool ATL_Character::TurnToTargetAtOnceWithHitResult(FHitResult HitResult)
+{
+	//Quick Turn With a HitResult 
+	AActor* OtherActor = HitResult.GetActor();
+	return TurnToTargetAtOnce(OtherActor->GetRootComponent());
+}
+
+bool ATL_Character::TurnToTargetAtOnce(USceneComponent* Target)
+{
+	//Immediately Turn To An Actor Target
+	if (Target) {
+		FVector SelfLocation = GetActorLocation();
+		FVector TargetLocation = Target->GetComponentLocation();
+		FRotator NewRotator = UKismetMathLibrary::FindLookAtRotation(SelfLocation, TargetLocation);
+		NewRotator.Pitch = 0;
+		return SetActorRotation(NewRotator);
+	}
+	return false;
+}
 
 void ATL_Character::TurnAtRate(float Rate)
 {
@@ -217,49 +217,49 @@ void ATL_Character::MoveRight(float Value)
 
 //Character Interface(Could Be Overrided By BP Implements)
 
-//void ATL_Character::ACT_ApplyDamage_Implementation(USceneComponent* DamageCausor, AActor* Target, UParticleSystem* ParticleTemplate, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType, float FXScale /* = 1 */, bool bCustomizeLoc, FVector FXPos)
-//{
-//
-//}
-//
-//void ATL_Character::ACT_TakeDamage_Implementation(USceneComponent* DamageCausor, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType)
-//{
-//
-//}
-//
-//void ATL_Character::ACT_DunFrame_Implementation(float TimeDilation, float Duration, float CameraBoomMin, TSubclassOf<UCameraShake> CamearaShake, UCurveFloat* CameraCurve)
-//{
-//
-//}
-//
-//
-//void ATL_Character::ACT_RegisterAttack_Implementation(FCombatSenseStruct CombatSense, bool bCustomizeSocket, FName TraceStartSocket0, FName TraceStartSocket1)
-//{
-//	if (UACT_CombatComponent* CombatComponent = Cast<UACT_CombatComponent>(GetComponentByClass(UACT_CombatComponent::StaticClass())))
-//		if(AACTWeapon* MeleeWeapon = CombatComponent->GetCurrentWeaponOfType(EWeaponTypes::E_MELEE))
-//			MeleeWeapon->Execute_ACT_RegisterAttack(MeleeWeapon, CombatSense, bCustomizeSocket, TraceStartSocket0, TraceStartSocket1);
-//}
-//
-//void ATL_Character::ACT_UnregisterAttack_Implementation()
-//{
-//	if(UACT_CombatComponent* CombatComponent = Cast<UACT_CombatComponent>(GetComponentByClass(UACT_CombatComponent::StaticClass())))
-//		if(AACTWeapon* MeleeWeapon = CombatComponent->GetCurrentWeaponOfType(EWeaponTypes::E_MELEE))
-//			MeleeWeapon->Execute_ACT_UnregisterAttack(MeleeWeapon);
-//}
-//
-//
-//
-//void ATL_Character::ACT_DealDamage_Implementation(float Damage)
-//{
-//	
-//}
-//
-//
-//
-//void ATL_Character::ACT_CharacterDie_Implementation()
-//{
-//
-//}
+void ATL_Character::TL_ApplyDamage_Implementation(USceneComponent* DamageCausor, AActor* Target, UParticleSystem* ParticleTemplate, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType, float FXScale /* = 1 */, bool bCustomizeLoc, FVector FXPos)
+{
+
+}
+
+void ATL_Character::TL_TakeDamage_Implementation(USceneComponent* DamageCausor, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType)
+{
+
+}
+
+void ATL_Character::TL_DunFrame_Implementation(float TimeDilation, float Duration, float CameraBoomMin, TSubclassOf<UCameraShake> CamearaShake, UCurveFloat* CameraCurve)
+{
+
+}
+
+
+void ATL_Character::TL_RegisterAttack_Implementation(FCombatSenseStruct CombatSense, bool bCustomizeSocket, FName TraceStartSocket0, FName TraceStartSocket1)
+{
+	if (UTL_CombatComponent* CombatComponent = Cast<UTL_CombatComponent>(GetComponentByClass(UTL_CombatComponent::StaticClass())))
+		if(ATL_Weapon* MeleeWeapon = CombatComponent->GetCurrentWeaponOfType(EWeaponTypes::E_MELEE))
+			MeleeWeapon->Execute_TL_RegisterAttack(MeleeWeapon, CombatSense, bCustomizeSocket, TraceStartSocket0, TraceStartSocket1);
+}
+
+void ATL_Character::TL_UnregisterAttack_Implementation()
+{
+	if(UTL_CombatComponent* CombatComponent = Cast<UTL_CombatComponent>(GetComponentByClass(UTL_CombatComponent::StaticClass())))
+		if(ATL_Weapon* MeleeWeapon = CombatComponent->GetCurrentWeaponOfType(EWeaponTypes::E_MELEE))
+			MeleeWeapon->Execute_TL_UnregisterAttack(MeleeWeapon);
+}
+
+
+
+void ATL_Character::TL_DealDamage_Implementation(float Damage)
+{
+	
+}
+
+
+
+void ATL_Character::TL_CharacterDie_Implementation()
+{
+
+}
 
 
 

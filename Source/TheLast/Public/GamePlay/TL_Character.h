@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Engine/EngineTypes.h"
-
-//#include "TL_Weapon.h"
-//#include "TL_WidgetInterface.h"
-//#include "TL_CharacterInterface.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
+#include "TL_Weapon.h"
+#include "TL_WidgetInterface.h"
+#include "TL_CharacterInterface.h"
 
 #include "TL_Character.generated.h"
 
@@ -19,7 +19,7 @@ class UTL_SkillComponent;
  * 所有角色的基类
  */
 UCLASS(config=Game)
-class ATL_Character : public ACharacter//, public ITL_CharacterInterface, public ITL_WidgetInterface
+class ATL_Character : public ACharacter, public ITL_CharacterInterface, public ITL_WidgetInterface
 {
 	GENERATED_BODY()
 
@@ -87,56 +87,56 @@ public:
 	void SetLockMeshFwd(bool bValue) { GetCharacterMovement()->bOrientRotationToMovement = !bValue;  /*bDirUseSelfRot = bValue;*/ }
 
 
-	//UFUNCTION(BlueprintCallable)
-		//AActor* BindWeapon(TSubclassOf<AActor> WeaponSubClass, FName SocketName, USceneComponent* ComponentToBind);
-	//UFUNCTION(BlueprintCallable)
-		//bool TurnToTargetAtOnceWithHitResult(FHitResult HitResult);
-	//UFUNCTION(BlueprintCallable)
-		//bool TurnToTargetAtOnce(USceneComponent* Target);
+	UFUNCTION(BlueprintCallable)
+		AActor* BindWeapon(TSubclassOf<AActor> WeaponSubClass, FName SocketName, USceneComponent* ComponentToBind);
+	UFUNCTION(BlueprintCallable)
+		bool TurnToTargetAtOnceWithHitResult(FHitResult HitResult);
+	UFUNCTION(BlueprintCallable)
+		bool TurnToTargetAtOnce(USceneComponent* Target);
 
 
 
 public:
 
-	//UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	//void ACT_ApplyDamage(USceneComponent* DamageCausor, AActor* Target, UParticleSystem* ParticleTemplate, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType, float FXScale /* = 1 */, bool bCustomizeLoc, FVector FXPos);
-	//virtual void ACT_ApplyDamage_Implementation(USceneComponent* DamageCausor, AActor* Target, UParticleSystem* ParticleTemplate, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType, float FXScale /* = 1 */, bool bCustomizeLoc, FVector FXPos) override;
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void TL_ApplyDamage(USceneComponent* DamageCausor, AActor* Target, UParticleSystem* ParticleTemplate, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType, float FXScale /* = 1 */, bool bCustomizeLoc, FVector FXPos);
+	virtual void TL_ApplyDamage_Implementation(USceneComponent* DamageCausor, AActor* Target, UParticleSystem* ParticleTemplate, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType, float FXScale /* = 1 */, bool bCustomizeLoc, FVector FXPos) override;
 
-	//UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	//void ACT_TakeDamage(USceneComponent* DamageCausor, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType);
-	//virtual void ACT_TakeDamage_Implementation(USceneComponent* DamageCausor, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType) override;
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void TL_TakeDamage(USceneComponent* DamageCausor, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType);
+	virtual void TL_TakeDamage_Implementation(USceneComponent* DamageCausor, FHitReacStruct HitReact, TSubclassOf<UDamageType> DamageType) override;
 
-	//UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	//void ACT_DunFrame(float TimeDilation, float Duration, float CameraBoomMin, TSubclassOf<UCameraShake> CamearaShake, UCurveFloat* CameraCurve);
-	//virtual void ACT_DunFrame_Implementation(float TimeDilation, float Duration, float CameraBoomMin, TSubclassOf<UCameraShake> CamearaShake, UCurveFloat* CameraCurve) override;
-
-
-	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	//void ACT_RegisterAttack(FCombatSenseStruct CombatSense, bool bCustomizeSocket, FName TraceStartSocket0, FName TraceStartSocket1);
-	//virtual void ACT_RegisterAttack_Implementation(FCombatSenseStruct CombatSense, bool bCustomizeSocket, FName TraceStartSocket0, FName TraceStartSocket1);
-
-	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	//void ACT_UnregisterAttack();
-	//virtual void ACT_UnregisterAttack_Implementation();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void TL_DunFrame(float TimeDilation, float Duration, float CameraBoomMin, TSubclassOf<UCameraShake> CamearaShake, UCurveFloat* CameraCurve);
+	virtual void TL_DunFrame_Implementation(float TimeDilation, float Duration, float CameraBoomMin, TSubclassOf<UCameraShake> CamearaShake, UCurveFloat* CameraCurve) override;
 
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void TL_RegisterAttack(FCombatSenseStruct CombatSense, bool bCustomizeSocket, FName TraceStartSocket0, FName TraceStartSocket1);
+	virtual void TL_RegisterAttack_Implementation(FCombatSenseStruct CombatSense, bool bCustomizeSocket, FName TraceStartSocket0, FName TraceStartSocket1);
 
-	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	//void ACT_DealDamage(float Damage);
-	//virtual void ACT_DealDamage_Implementation(float Damage) override;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void TL_UnregisterAttack();
+	virtual void TL_UnregisterAttack_Implementation();
 
 
 
-	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	//void ACT_CharacterDie();
-	//virtual void ACT_CharacterDie_Implementation() override;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void TL_DealDamage(float Damage);
+	virtual void TL_DealDamage_Implementation(float Damage) override;
+
+
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void TL_CharacterDie();
+	virtual void TL_CharacterDie_Implementation() override;
 
 	//UI
-	//UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	//void ACT_UpdatePropertyUI(EACT_PropertyEnum EProperty, float Value);
-	//UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	//void ACT_InitializeUI();
-	//UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	//void ACT_InitializePropertyUI(EACT_PropertyEnum EProperty);
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void TL_UpdatePropertyUI(ETL_PropertyEnum EProperty, float Value);
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void TL_InitializeUI();
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void TL_InitializePropertyUI(ETL_PropertyEnum EProperty);
 };
 
