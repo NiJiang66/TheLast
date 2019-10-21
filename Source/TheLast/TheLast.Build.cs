@@ -11,6 +11,7 @@ public class TheLast : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
+            "TL_GameLoadingScreen",
             "Json",
             "JsonUtilities",
             "UMG",
