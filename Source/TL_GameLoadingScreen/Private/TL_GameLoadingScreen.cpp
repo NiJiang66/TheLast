@@ -6,7 +6,7 @@
 #include "SThrobber.h"
 
 //定义加载的图片路径
-#define LOADING_SCREEN_NAME TEXT("/Game/GameLoadingScreen/LoadingScreen.LoadingScreen")
+#define LOADING_SCREEN_NAME TEXT("/Game/Resource/GameLoadingScreen/LoadingScreen.LoadingScreen")
 
 
 // This module must be loaded "PreLoadingScreen" in the .uproject file, otherwise it will not hook in time!
