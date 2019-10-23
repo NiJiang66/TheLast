@@ -7,64 +7,64 @@ TMap<FString, TArray<UObject*>> UEventManager::AllListener;
 
 void UEventManager::AddEventListener(FString EventName, UObject* Listener)
 {
-	if (EventName == "" || Listener == NULL)
-	{
+	if (EventName.IsEmpty() || Listener == nullptr) {
 		return;
 	}
 
 	Listener->AddToRoot();
 
-	TArray<UObject*>* arr = UEventManager::AllListener.Find(EventName);
-	if (arr == NULL || arr->Num() == 0) 
-	{
-		TArray<UObject*> arr1 = { Listener };
-		UEventManager::AllListener.Add(EventName, arr1);
+	if (UEventManager::AllListener.Contains(EventName)) {
+		UEventManager::AllListener[EventName].Emplace(Listener);
 	}
-	else
-	{
-		arr->Add(Listener);
+	else {
+		TArray<UObject*> arrTmp = { Listener };
+		UEventManager::AllListener.Emplace(EventName, arrTmp);
 	}
 }
 
 void UEventManager::RemoveEventListener(FString EventName, UObject* Listener)
 {
-	TArray<UObject*>* arr = UEventManager::AllListener.Find(EventName);
-	if (arr != NULL || arr->Num() == 0)
-	{
-		arr->Remove(Listener);
+	if (UEventManager::AllListener.Contains(EventName)) {
+		UEventManager::AllListener[EventName].Remove(Listener);
 		Listener->RemoveFromRoot();
-		Listener = NULL;
 	}
 }
 
 FString UEventManager::DispatchEvent(FString EventName, UObject* Datas)
 {
-	TArray<UObject*>* arr = UEventManager::AllListener.Find(EventName);
-	if(arr == NULL || arr->Num() == 0)
-	{
-		return " ' " + EventName + " 'No Listener.";
-	}
-	FString errorInfo = "";
-	for (int i = 0; i < arr->Num(); i++)
-	{
-		UObject* obj = (*arr)[i];
-		UFunction* fun = obj->FindFunction("ExecuteFun");
-		if (fun == NULL)
-		{
-			errorInfo += "'" + obj->GetName() + "'No 'ExecuteFun' Function.\n";
-		}
-		else
-		{ 
-			obj->ProcessEvent(fun, &Datas);
-		}
+	FString errorInfo = TEXT("");
+	if (EventName.IsEmpty()) errorInfo += "EventName Is Empty!";
+	if (Datas == nullptr) errorInfo += "Datas is nullptr!";
+	if (EventName.IsEmpty() || Datas == nullptr) {
+		if (Datas != nullptr) Datas->RemoveFromRoot();
+		return errorInfo;
 	}
 
+	if (UEventManager::AllListener.Contains(EventName) && UEventManager::AllListener[EventName].Num() > 0) {
+		for (UObject*& obj : UEventManager::AllListener[EventName]) {
+			UFunction* fun = obj->FindFunction("ExecuteFun");
+			if (fun == nullptr) {
+				errorInfo += "'" + obj->GetName() + "'No 'ExecuteFun' Function. \n";
+			}
+			else {
+				obj->ProcessEvent(fun, &Datas);
+			}
+		}
+	}
+	else {
+		errorInfo = "'" + EventName + "'No Listener.";
+	}
+	if(Datas->IsRooted()){
+		Datas->RemoveFromRoot();
+	}	
 	return errorInfo;
 }
 
-UObject* UEventManager::NewAsset(UClass* ClassType)
+UObject* UEventManager::NewDataObj(TSubclassOf<UObject> ClassType)
 {
-	UObject* obj = NewObject<UObject>(GetTransientPackage(), ClassType);
-	obj->AddToRoot();
+	UObject* obj = NewObject<UObject>((UClass*)GetTransientPackage(), ClassType);
+	if (obj) {
+		obj->AddToRoot();
+	}
 	return obj;
 }

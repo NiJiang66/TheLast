@@ -13,14 +13,13 @@ class UEventInterface : public UInterface
 };
 
 /**
- * 
+ * 事件分发机制接口
  */
 class THELAST_API IEventInterface
 {
 	GENERATED_BODY()
-
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	/** 当事件发送时调用观察者(监听者)的ExecuteFun函数，实体对象通过实现该接口就成为观察者(监听者) */
 	UFUNCTION(BlueprintImplementableEvent, Category = "EventDistributionUtility")
-	void ExecuteFun(UObject* Datas);
+		void ExecuteFun(UObject* Datas);
 };
