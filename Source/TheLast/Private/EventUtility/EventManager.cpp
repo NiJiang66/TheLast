@@ -2,6 +2,7 @@
 
 #include "EventManager.h"
 #include "Engine.h"
+#include "EventDataBase.h"
 
 TMap<FString, TArray<UObject*>> UEventManager::AllListener;
 
@@ -60,9 +61,9 @@ FString UEventManager::DispatchEvent(FString EventName, UObject* Datas)
 	return errorInfo;
 }
 
-UObject* UEventManager::NewDataObj(TSubclassOf<UObject> ClassType)
+UEventDataBase* UEventManager::NewDataObj(TSubclassOf<UEventDataBase> ClassType)
 {
-	UObject* obj = NewObject<UObject>((UClass*)GetTransientPackage(), ClassType);
+	UEventDataBase* obj = NewObject<UEventDataBase>((UClass*)GetTransientPackage(), ClassType);
 	if (obj) {
 		obj->AddToRoot();
 	}

@@ -14,7 +14,9 @@ class THELAST_API UEventDataBase : public UObject
 public:
 	/**	获取事件名 */
 	UFUNCTION(BlueprintPure, Category = "EventDataBase")
-		FString GetEventName()const;
+		FORCEINLINE FString GetEventName()const {
+		return EventName;
+	}
 
 	/**
 	 * 设置消除前后空格的事件名
@@ -22,35 +24,22 @@ public:
 	 * @return					返回消除前后空格的事件名
 	 */
 	UFUNCTION(BlueprintCallable, Category = "EventDataBase")
-		FString SetEventName(FString InEventName);
+		FORCEINLINE FString SetEventName(FString InEventName) {		
+		return EventName = InEventName.TrimStartAndEnd();// 消除前后空格后输出
+	}
 
-	/**	设置事件名，并输出事件名，函数内部自动消除前后空格  */
 	/**
 	 * 设置消除前后空格的事件名，并直接分发事件
 	 * @param	InEventName		输入事件名
 	 * @return					返回分发事件后的返回结果
 	 */
 	UFUNCTION(BlueprintCallable, Category = "EventDataBase")
-		FString SetEventNameAndDispatch(FString InEventName);
+		FORCEINLINE FString SetEventNameAndDispatch(FString InEventName){
+		FString ErrInfo = UEventManager::DispatchEvent(SetEventName(InEventName), this);
+		return ErrInfo;
+	}
 
 private:
 	/**	事件名 */
 	FString EventName = TEXT("");
 };
-
-FString UEventDataBase::GetEventName() const
-{
-	return EventName;
-}
-
-FString UEventDataBase::SetEventName(FString InEventName)
-{
-	// 消除前后空格后输出
-	return EventName = InEventName.TrimStartAndEnd();
-}
-
-FString UEventDataBase::SetEventNameAndDispatch(FString InEventName)
-{
-	FString ErrInfo = UEventManager::DispatchEvent(SetEventName(InEventName), this);
-	return ErrInfo;
-}
