@@ -20,14 +20,12 @@ UTL_CombatComponent::UTL_CombatComponent()
 // Called when the game starts
 void UTL_CombatComponent::BeginPlay()
 {
-	Super::BeginPlay();
-
-	// ...
 	//Try Get player character
 	if (GetOwner()) {
 		PlayerCharacter = Cast<ATL_Character>(GetOwner());
 		ChangeStateAndWeaponOnHand(nullptr);
 	}
+	Super::BeginPlay();
 }
 
 
